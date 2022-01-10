@@ -161,7 +161,7 @@ def train_model(
     # y_score = model.predict_proba(X_test)
     y_score = model.predict(X_test)
     print(y_score)
-    print(S_test)
+    print(set(S_test))
 
     # Calculate confusion matrix
     y_predict = np.argmax(y_score, axis=1)
