@@ -27,16 +27,21 @@ if __name__ == "__main__":
     slice_lengths = [911]
     random_state_list = [0]
 
+    song_list = os.listdir("song_data")
+    song_list = list(filter(lambda x: x != ".DS_Store", song_list))
+
+    # アーティスト名を取得
+    artist_list = list(set(song.split("_%%-%%_")[0] for song in song_list))
+
     iterations = 1
     summary_metrics_output_folder = "trials_song_split"
     for slice_len in slice_lengths:
-
         scores = []
         pooling_scores = []
         for i in range(iterations):
             score, pooling_score = trainer.train_model(
                 # nb_classes=20,
-                nb_classes=6,
+                nb_classes=len(artist_list),
                 slice_length=slice_len,
                 lr=0.001,
                 train=True,

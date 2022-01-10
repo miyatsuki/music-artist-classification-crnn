@@ -10,10 +10,8 @@ import numpy as np
 def predict(
     nb_classes=20,
     slice_length=911,
-    artist_folder="artists",
     song_folder="song_data",
     save_weights_folder="weights",
-    # lr=0.0001,
     random_states=42,
 ):
     """
@@ -43,7 +41,6 @@ def predict(
         S_val,
     ) = utility.load_dataset_song_split(
         song_folder_name=song_folder,
-        artist_folder=artist_folder,
         nb_classes=nb_classes,
         random_state=random_states,
     )
@@ -72,13 +69,7 @@ def predict(
     X_test = X_test.reshape(X_test.shape + (1,))
 
     # build the model
-    # model = models.CRNN2D(X_train.shape, nb_classes=Y_train.shape[1])
     model = models.CRNN2D(X_train.shape, nb_classes=nb_classes)
-
-    # model.compile(
-    #     loss="categorical_crossentropy", optimizer=Adam(lr=lr), metrics=["accuracy"]
-    # )
-    # model.summary()
 
     # Load weights that gave best performance on validation set
     model.load_weights(weights)

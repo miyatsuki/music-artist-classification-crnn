@@ -98,12 +98,7 @@ def create_dataset(
                     dill.dump(data, fp)
 
 
-def load_dataset(
-    song_folder_name="song_data",
-    artist_folder="artists",
-    nb_classes=20,
-    random_state=42,
-):
+def load_dataset(song_folder_name="song_data", nb_classes=20, random_state=42):
     """This function loads the dataset based on a location;
     it returns a list of spectrograms
     and their corresponding artists/song names"""
@@ -112,9 +107,8 @@ def load_dataset(
     song_list = os.listdir(song_folder_name)
     song_list = list(filter(lambda x: x != ".DS_Store", song_list))
 
-    # Load the list of artists
-    artist_list = os.listdir(artist_folder)
-    artist_list = list(filter(lambda x: x != ".DS_Store", artist_list))
+    # アーティスト名を取得
+    artist_list = list(set(song.split("_%%-%%_")[0] for song in song_list))
 
     # select the appropriate number of classes
     prng = RandomState(random_state)
@@ -145,6 +139,10 @@ def load_dataset_album_split(
 ):
     """This function loads a dataset and splits it on an album level"""
     song_list = os.listdir(song_folder_name)
+    song_list = list(filter(lambda x: x != ".DS_Store", song_list))
+
+    # アーティスト名を取得
+    artist_list = list(set(song.split("_%%-%%_")[0] for song in song_list))
 
     # Load the list of artists
     artist_list = os.listdir(artist_folder)
@@ -195,7 +193,6 @@ def load_dataset_album_split(
 
 def load_dataset_song_split(
     song_folder_name="song_data",
-    artist_folder="artists",
     nb_classes=20,
     test_split_size=0.1,
     validation_split_size=0.1,
@@ -203,7 +200,6 @@ def load_dataset_song_split(
 ):
     Y, X, S = load_dataset(
         song_folder_name=song_folder_name,
-        artist_folder=artist_folder,
         nb_classes=nb_classes,
         random_state=random_state,
     )

@@ -15,7 +15,6 @@ from sklearn.metrics import confusion_matrix, classification_report
 def train_model(
     nb_classes=20,
     slice_length=911,
-    artist_folder="artists",
     song_folder="song_data",
     plots=True,
     train=True,
@@ -66,7 +65,6 @@ def train_model(
             S_val,
         ) = utility.load_dataset_song_split(
             song_folder_name=song_folder,
-            artist_folder=artist_folder,
             nb_classes=nb_classes,
             random_state=random_states,
         )
@@ -83,7 +81,6 @@ def train_model(
             S_val,
         ) = utility.load_dataset_album_split(
             song_folder_name=song_folder,
-            artist_folder=artist_folder,
             nb_classes=nb_classes,
             random_state=random_states,
         )
