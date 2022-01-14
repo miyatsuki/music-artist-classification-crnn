@@ -102,6 +102,8 @@ def train_model(
     Y_train, le, enc = utility.encode_labels(Y_train)
     Y_test, le, enc = utility.encode_labels(Y_test, le, enc)
     Y_val, le, enc = utility.encode_labels(Y_val, le, enc)
+    print("Label Encoder")
+    print(le.inverse_transform(list(range(nb_classes))))
 
     # Reshape data as 2d convolutional tensor shape
     X_train = X_train.reshape(X_train.shape + (1,))
