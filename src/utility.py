@@ -56,6 +56,7 @@ def create_dataset(
     artists = [
         path for path in os.listdir(artist_folder) if os.path.isdir("artists/" + path)
     ]
+    random.shuffle(artists)
 
     # iterate through all artists, albums, songs and find mel spectrogram
     for artist in artists:

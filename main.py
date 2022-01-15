@@ -4,11 +4,13 @@ Created on Tue Nov  7 13:05:16 2017
 Updated on Nov 14 2017
 @author: Zain
 """
-import os
-import pandas as pd
 import gc
+import os
 
-import src.trainer as trainer
+import pandas as pd
+
+# import src.trainer as trainer
+import src.trainer2 as trainer
 
 if __name__ == "__main__":
 
@@ -24,7 +26,7 @@ if __name__ == "__main__":
 
     # slice_lengths = [911, 628, 313, 157, 94, 32]
     # random_state_list = [0, 21, 42]
-    slice_lengths = [911]
+    slice_lengths = [32]
     random_state_list = [0]
 
     song_list = os.listdir("song_data")
@@ -39,21 +41,23 @@ if __name__ == "__main__":
         scores = []
         pooling_scores = []
         for i in range(iterations):
-            score, pooling_score = trainer.train_model(
+            # score, pooling_score = trainer.train_model(
+            trainer.train_model(
                 # nb_classes=20,
-                nb_classes=len(artist_list),
+                # nb_classes=len(artist_list),
                 slice_length=slice_len,
                 lr=0.001,
-                train=True,
-                load_checkpoint=True,
+                # train=True,
+                # load_checkpoint=True,
                 plots=False,
-                album_split=False,
+                # album_split=False,
                 random_states=random_state_list[i],
-                save_metrics=True,
+                # save_metrics=True,
                 save_metrics_folder="metrics_song_split",
                 save_weights_folder="weights_song_split",
             )
 
+        """
             scores.append(score["weighted avg"])
             pooling_scores.append(pooling_score["weighted avg"])
             gc.collect()
@@ -67,3 +71,4 @@ if __name__ == "__main__":
         pd.DataFrame(pooling_scores).to_csv(
             "{}/{}_pooled_score.csv".format(summary_metrics_output_folder, slice_len)
         )
+        """
