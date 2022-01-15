@@ -1,21 +1,19 @@
-import os
-import dill
-import random
 import itertools
+import os
 import pathlib
+import random
 
-import numpy as np
-from numpy.random import RandomState
-import matplotlib.pyplot as plt
-
+import dill
 import librosa
 import librosa.display
-
-from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
-from sklearn.metrics import confusion_matrix, classification_report
-from sklearn.utils import shuffle
+import matplotlib.pyplot as plt
+import numpy as np
+from numpy.random import RandomState
 from scipy import stats
+from sklearn import preprocessing
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.model_selection import train_test_split
+from sklearn.utils import shuffle
 
 
 def visualize_spectrogram(
@@ -90,7 +88,8 @@ def create_dataset(
                 S = librosa.feature.melspectrogram(
                     y, sr=sr, n_mels=n_mels, n_fft=n_fft, hop_length=hop_length
                 )
-                log_S = librosa.core.amplitude_to_db(S, ref=1.0)
+                # log_S = librosa.core.amplitude_to_db(S, ref=1.0)
+                log_S = librosa.core.power_to_db(S, ref=np.max)
                 data = (artist, log_S, song)
 
                 # Save each song
