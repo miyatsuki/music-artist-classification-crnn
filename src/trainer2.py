@@ -61,7 +61,7 @@ def train_model(
     X = np.array(spectrogram)
     y = np.array(song_name)
 
-    print("Training set label counts:", np.unique(y, return_counts=True))
+    print("Training set label counts:", len(np.unique(y)))
 
     # Encode the target vectors into one-hot encoded vectors
     y, le, enc = utility.encode_labels(y)
@@ -74,6 +74,9 @@ def train_model(
         X, y, stratify=y
     )
 
+    # メモリ量が危ないので消しておく
+    del X, y
+
     # Reshape data as 2d convolutional tensor shape
     X_train = X_train.reshape(X_train.shape + (1,))
     X_val = X_val.reshape(X_val.shape + (1,))
@@ -81,7 +84,9 @@ def train_model(
     # build the model
     model = models.CRNN2D(X_train.shape, nb_classes=nb_classes)
     model.compile(
-        loss="categorical_crossentropy", optimizer=Adam(lr=lr), metrics=["accuracy"]
+        loss="categorical_crossentropy",
+        optimizer=Adam(learning_rate=lr),
+        metrics=["accuracy"],
     )
     model.summary()
 
