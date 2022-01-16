@@ -41,12 +41,10 @@ def train_model(
 
     print("Loading dataset...")
     spectrogram_raw = []
-    song_name_raw = []
     for song in songs:
         with open(song, "rb") as fp:
             loaded_song = dill.load(fp)
             spectrogram_raw.append(loaded_song[1])
-            song_name_raw.append(song)
 
     print("Loaded and split dataset. Slicing songs...")
     # Create empty lists for train and test sets
@@ -58,7 +56,7 @@ def train_model(
         slices = int(spec.shape[1] / slice_length)
         for j in range(slices - 1):
             spectrogram.append(spec[:, slice_length * j : slice_length * (j + 1)])
-            song_name.append(song_name_raw[i])
+            song_name.append(songs[i].stem)
 
     X = np.array(spectrogram)
     y = np.array(song_name)
@@ -68,7 +66,9 @@ def train_model(
     # Encode the target vectors into one-hot encoded vectors
     y, le, enc = utility.encode_labels(y)
     print("Label Encoder")
-    print(le.inverse_transform(list(range(nb_classes))))
+    with open(f"{slice_length}_{random_states}.labels.txt", "w") as f:
+        labels = le.inverse_transform(list(range(nb_classes)))
+        f.write("\n".join(labels))
 
     X_train, X_val, y_train, y_val = sklearn.model_selection.train_test_split(
         X, y, stratify=y
